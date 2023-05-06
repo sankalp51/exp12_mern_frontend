@@ -22,25 +22,30 @@ const CreateBook = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        if (book.title === "" || book.author === "" || book.description === "" || book.isbn === "" || book.publisher === "" || book.published_date === "") {
+            alert("Enter valid data to save the book");
+        }
+        else {
+            axios
+                .post('http://localhost:3000/api/books', book)
+                .then((res) => {
+                    setBook({
+                        title: '',
+                        isbn: '',
+                        author: '',
+                        description: '',
+                        published_date: '',
+                        publisher: '',
+                    });
 
-        axios
-            .post('http://localhost:3000/api/books', book)
-            .then((res) => {
-                setBook({
-                    title: '',
-                    isbn: '',
-                    author: '',
-                    description: '',
-                    published_date: '',
-                    publisher: '',
+                    // Push to /
+                    navigate('/');
+                })
+                .catch((err) => {
+                    console.log('Error in CreateBook!');
                 });
+        }
 
-                // Push to /
-                navigate('/');
-            })
-            .catch((err) => {
-                console.log('Error in CreateBook!');
-            });
     };
 
     return (
